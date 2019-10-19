@@ -21,7 +21,7 @@ import retrofit2.Response;
 public final class CheckUpdate {
     private Context mContext;
 
-
+    private CheckUpdateDialogListener checkUpdateDialogListener;
     private int currentVersionId;
 
     public static final String TAG = "CheckUpdate";
@@ -40,6 +40,10 @@ public final class CheckUpdate {
         return this;
     }
 
+    public CheckUpdate setCheckUpdateDialogListener(CheckUpdateDialogListener checkUpdateDialogListener) {
+        this.checkUpdateDialogListener = checkUpdateDialogListener;
+        return this;
+    }
 
     private void init() {
         apiService = ApiServiceGenerator.createService(mContext, ApiService.class);
@@ -60,6 +64,15 @@ public final class CheckUpdate {
         executeSequenceCall.enqueue(new Callback<CheckUpdateModel>() {
             @Override
             public void onResponse(Call<CheckUpdateModel> call, Response<CheckUpdateModel> response) {
+
+                ModelCheckUpdate modelCheckUpdate2 = new ModelCheckUpdate().getInstance();
+                modelCheckUpdate2.setName("test");
+                modelCheckUpdate2.setVersionId(10);
+                modelCheckUpdate2.setReleasedate("december");
+
+                if (checkUpdateDialogListener != null)
+                    checkUpdateDialogListener.onRecieveData(modelCheckUpdate2);
+
                 if (response.isSuccessful()) {
                     String name = "";
                     int versionId = 0;
@@ -73,6 +86,9 @@ public final class CheckUpdate {
                         modelCheckUpdate.setName(name);
                         modelCheckUpdate.setVersionId(versionId);
                         modelCheckUpdate.setReleasedate(releaseDate);
+
+                        if (checkUpdateDialogListener != null)
+                            checkUpdateDialogListener.onRecieveData(modelCheckUpdate);
                     }
                 } else {
                     Log.i(TAG, "else failure");

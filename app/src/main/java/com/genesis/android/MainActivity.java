@@ -10,8 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.genesis.android.network.CheckUpdate;
+import com.genesis.android.network.CheckUpdateDialogListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CheckUpdateDialogListener {
 
     private Toolbar toolbar;
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                     int version = pInfo.versionCode;
-                    new CheckUpdate(MainActivity.this).setCurrentVersionId(version).check();
+                    new CheckUpdate(MainActivity.this).setCurrentVersionId(version).setCheckUpdateDialogListener(MainActivity.this).check();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -48,5 +49,13 @@ public class MainActivity extends AppCompatActivity {
             // case blocks for other MenuItems (if any)
         }
         return true;
+    }
+
+    @Override
+    public void onRecieveData(ModelCheckUpdate modelCheckUpdate) {
+        DownloadDialog downloadDialog = new DownloadDialog();
+        downloadDialog.setContext(MainActivity.this);
+        downloadDialog.setModelCheckUpdate(modelCheckUpdate);
+        downloadDialog.show(MainActivity.this.getFragmentManager(), "DownloadDialog");
     }
 }
