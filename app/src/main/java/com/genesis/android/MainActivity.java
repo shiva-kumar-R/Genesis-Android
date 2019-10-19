@@ -3,6 +3,7 @@ package com.genesis.android;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements CheckUpdateDialog
                 try {
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                     int version = pInfo.versionCode;
-                    new CheckUpdate(MainActivity.this).setCurrentVersionId(version).setCheckUpdateDialogListener(MainActivity.this).check();
+                    String app_name = MainActivity.this.getResources().getString(R.string.app_name);
+                    new CheckUpdate(MainActivity.this).setCurrentVersionId(version).setApp_name(app_name).setCheckUpdateDialogListener(MainActivity.this).check();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }

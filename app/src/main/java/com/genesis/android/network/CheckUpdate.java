@@ -23,6 +23,7 @@ public final class CheckUpdate {
 
     private CheckUpdateDialogListener checkUpdateDialogListener;
     private int currentVersionId;
+    private String app_name;
 
     public static final String TAG = "CheckUpdate";
 
@@ -40,6 +41,11 @@ public final class CheckUpdate {
         return this;
     }
 
+    public CheckUpdate setApp_name(String app_name) {
+        this.app_name = app_name;
+        return this;
+    }
+
     public CheckUpdate setCheckUpdateDialogListener(CheckUpdateDialogListener checkUpdateDialogListener) {
         this.checkUpdateDialogListener = checkUpdateDialogListener;
         return this;
@@ -51,41 +57,46 @@ public final class CheckUpdate {
 
     public final void check() {
         // Make a request object and set the paremeters
-        JSONObject checkUpdateRequest = new JSONObject();
-        try {
-            checkUpdateRequest.put("currentVersionId", currentVersionId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        JSONObject checkUpdateRequest = new JSONObject();
+//        try {
+//            checkUpdateRequest.put("app-name", "");
+//            checkUpdateRequest.put("patch-file", currentVersionId);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         // Execute sequence
-        Call<CheckUpdateModel> executeSequenceCall = apiService.checkupdate(checkUpdateRequest.toString());
+        Call<CheckUpdateModel> executeSequenceCall = apiService.checkForUpdate(app_name, String.valueOf(currentVersionId));
 
         executeSequenceCall.enqueue(new Callback<CheckUpdateModel>() {
             @Override
             public void onResponse(Call<CheckUpdateModel> call, Response<CheckUpdateModel> response) {
 
-                ModelCheckUpdate modelCheckUpdate2 = new ModelCheckUpdate().getInstance();
-                modelCheckUpdate2.setName("test");
-                modelCheckUpdate2.setVersionId(10);
-                modelCheckUpdate2.setReleasedate("december");
-
-                if (checkUpdateDialogListener != null)
-                    checkUpdateDialogListener.onRecieveData(modelCheckUpdate2);
+//                ModelCheckUpdate modelCheckUpdate2 = new ModelCheckUpdate().getInstance();
+//                modelCheckUpdate2.setName("test");
+//                modelCheckUpdate2.setVersionId(10);
+//                modelCheckUpdate2.setReleasedate("december");
+//
+//                if (checkUpdateDialogListener != null)
+//                    checkUpdateDialogListener.onRecieveData(modelCheckUpdate2);
 
                 if (response.isSuccessful()) {
                     String name = "";
-                    int versionId = 0;
-                    String releaseDate = "";
+                    String version = "";
+                    String release_date = "";
+                    int patch_id = 0;
+                    String patch_file = "";
                     if (response.body() != null) {
                         CheckUpdateModel body = response.body();
                         name = body.getName();
-                        versionId = body.getVersionId();
-                        releaseDate = body.getReleasedate();
+                        version = body.getVersion();
+                        release_date = body.getRelease_date();
                         ModelCheckUpdate modelCheckUpdate = new ModelCheckUpdate().getInstance();
                         modelCheckUpdate.setName(name);
-                        modelCheckUpdate.setVersionId(versionId);
-                        modelCheckUpdate.setReleasedate(releaseDate);
+                        modelCheckUpdate.setVersion(version);
+                        modelCheckUpdate.setRelease_date(release_date);
+                        modelCheckUpdate.setPatch_id(patch_id);
+                        modelCheckUpdate.setPatch_file(patch_file);
 
                         if (checkUpdateDialogListener != null)
                             checkUpdateDialogListener.onRecieveData(modelCheckUpdate);

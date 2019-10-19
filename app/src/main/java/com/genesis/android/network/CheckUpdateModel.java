@@ -11,11 +11,17 @@ public class CheckUpdateModel {
     /**
      * If login is successful, save this session id in shared preferences to use in subsequent executeSequence and getData API calls.
      */
-    @SerializedName("versionId")
-    private int versionId;
+    @SerializedName("version")
+    private String version;
 
-    @SerializedName("releasedate")
-    private String releasedate;
+    @SerializedName("release_date")
+    private String release_date;
+
+    @SerializedName("patch_id")
+    private int patch_id;
+
+    @SerializedName("patch_file")
+    private String patch_file;
 
     public String getName() {
         return name;
@@ -25,19 +31,35 @@ public class CheckUpdateModel {
         this.name = name;
     }
 
-    public int getVersionId() {
-        return versionId;
+    public String getVersion() {
+        return version;
     }
 
-    public void setVersionId(int versionId) {
-        this.versionId = versionId;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public String getReleasedate() {
-        return releasedate;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    public void setReleasedate(String releasedate) {
-        this.releasedate = releasedate;
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
+    }
+
+    public int getPatch_id() {
+        return patch_id;
+    }
+
+    public void setPatch_id(int patch_id) {
+        this.patch_id = patch_id;
+    }
+
+    public String getPatch_file() {
+        return patch_file;
+    }
+
+    public void setPatch_file(String patch_file) {
+        this.patch_file = patch_file;
     }
 }

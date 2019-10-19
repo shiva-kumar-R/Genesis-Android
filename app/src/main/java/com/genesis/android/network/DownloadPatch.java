@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.genesis.android.ModelCheckUpdate;
+import com.genesis.android.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +28,6 @@ public final class DownloadPatch {
     private Context mContext;
 
 
-    private int currentVersionId;
-
     public static final String TAG = "DownloadPatch";
 
 
@@ -40,61 +39,13 @@ public final class DownloadPatch {
         init();
     }
 
-    public DownloadPatch setCurrentVersionId(int currentVersionId) {
-        this.currentVersionId = currentVersionId;
-        return this;
-    }
-
-
     private void init() {
         apiService = ApiServiceGenerator.createService(mContext, ApiService.class);
     }
 
-    public final void check() {
-        // Make a request object and set the paremeters
-        JSONObject checkUpdateRequest = new JSONObject();
-        try {
-            checkUpdateRequest.put("currentVersionId", currentVersionId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        // Execute sequence
-        Call<CheckUpdateModel> executeSequenceCall = apiService.checkupdate(checkUpdateRequest.toString());
-
-        executeSequenceCall.enqueue(new Callback<CheckUpdateModel>() {
-            @Override
-            public void onResponse(Call<CheckUpdateModel> call, Response<CheckUpdateModel> response) {
-                if (response.isSuccessful()) {
-                    String name = "";
-                    int versionId = 0;
-                    String releaseDate = "";
-                    if (response.body() != null) {
-                        CheckUpdateModel body = response.body();
-                        name = body.getName();
-                        versionId = body.getVersionId();
-                        releaseDate = body.getReleasedate();
-                        ModelCheckUpdate modelCheckUpdate = new ModelCheckUpdate().getInstance();
-                        modelCheckUpdate.setName(name);
-                        modelCheckUpdate.setVersionId(versionId);
-                        modelCheckUpdate.setReleasedate(releaseDate);
-                    }
-                } else {
-                    Log.i(TAG, "else failure");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CheckUpdateModel> call, Throwable t) {
-                // Notify registered listener
-                Log.i(TAG, "failure ");
-                t.printStackTrace();
-            }
-        });
-    }
-
-    public static void downloadPatchFile(final Context context, final String fileName) {
-        Call<ResponseBody> call = apiService.downloadPatchFile();
+    public static void downloadPatchFile(final Context context, final String patch_file) {
+        String app_name = context.getResources().getString(R.string.app_name);
+        Call<ResponseBody> call = apiService.downloadPatchFile(app_name, patch_file);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -106,7 +57,7 @@ public final class DownloadPatch {
                     protected Boolean doInBackground(Void... voids) {
                         boolean success = false;
                         if (response.body() != null) {
-                            success = writeResponseBodyToDisk(context, response.body(), fileName);
+                            success = writeResponseBodyToDisk(context, response.body(), patch_file);
                             response.body().close();
                         }
 

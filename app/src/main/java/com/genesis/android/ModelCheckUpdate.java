@@ -3,8 +3,10 @@ package com.genesis.android;
 public class ModelCheckUpdate {
 
     private String name;
-    private int versionId;
-    private String releasedate;
+    private String version;
+    private String release_date;
+    private int patch_id;
+    private String patch_file;
 
     private ModelCheckUpdate modelCheckUpdate;
 
@@ -16,23 +18,39 @@ public class ModelCheckUpdate {
         this.name = name;
     }
 
-    public int getVersionId() {
-        return versionId;
+    public String getVersion() {
+        return version;
     }
 
-    public void setVersionId(int versionId) {
-        this.versionId = versionId;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public String getReleasedate() {
-        return releasedate;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    public void setReleasedate(String releasedate) {
-        this.releasedate = releasedate;
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
-    public ModelCheckUpdate(){
+    public int getPatch_id() {
+        return patch_id;
+    }
+
+    public void setPatch_id(int patch_id) {
+        this.patch_id = patch_id;
+    }
+
+    public String getPatch_file() {
+        return patch_file;
+    }
+
+    public void setPatch_file(String patch_file) {
+        this.patch_file = patch_file;
+    }
+
+    public ModelCheckUpdate() {
 
     }
 
