@@ -1,6 +1,7 @@
 package com.genesis.android;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,7 +32,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class DownloadDialog extends DialogFragment {
     private Context context;
-    private MaterialButton material_download;
+    private Button material_download;
     private ModelCheckUpdate modelCheckUpdate;
     private TextView textView_name;
     private TextView textView_version;
@@ -70,10 +72,22 @@ public class DownloadDialog extends DialogFragment {
         material_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DownloadPatch(context).downloadPatchFile(context, modelCheckUpdate.getPatch_file());
+                new DownloadPatch(context).downloadPatchFile(context, modelCheckUpdate.getPatch_id(), modelCheckUpdate.getPatch_file());
             }
         });
 
         return view;
+    }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null)
+        {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setLayout(width, height);
+        }
     }
 }

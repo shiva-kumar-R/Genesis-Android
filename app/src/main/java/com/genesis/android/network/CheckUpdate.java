@@ -85,20 +85,23 @@ public final class CheckUpdate {
                     String name = "";
                     String version = "";
                     String release_date = "";
-                    int patch_id = 0;
+                    String patch_id = "";
                     String patch_file = "";
                     if (response.body() != null) {
                         CheckUpdateModel body = response.body();
                         name = body.getName();
                         version = body.getVersion();
                         release_date = body.getRelease_date();
+                        patch_id = body.getPatch_id();
+                        patch_file = body.getPatch_file();
+
                         ModelCheckUpdate modelCheckUpdate = new ModelCheckUpdate().getInstance();
                         modelCheckUpdate.setName(name);
                         modelCheckUpdate.setVersion(version);
                         modelCheckUpdate.setRelease_date(release_date);
                         modelCheckUpdate.setPatch_id(patch_id);
                         modelCheckUpdate.setPatch_file(patch_file);
-
+                        Log.d("Dynamic","patch id" + patch_id);
                         if (checkUpdateDialogListener != null)
                             checkUpdateDialogListener.onRecieveData(modelCheckUpdate);
                     }

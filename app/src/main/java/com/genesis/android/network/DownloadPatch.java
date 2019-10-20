@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import com.genesis.android.R;
 import com.genesis.android.network.bsdiff.BSPatch;
 
@@ -45,9 +47,9 @@ public final class DownloadPatch {
         apiService = ApiServiceGenerator.createService(mContext, ApiService.class);
     }
 
-    public void downloadPatchFile(final Context context, final String patch_file) {
+    public void downloadPatchFile(final Context context, final String patch_id, final String patch_file) {
         String app_name = context.getResources().getString(R.string.app_name).toLowerCase();
-        Call<ResponseBody> call = apiService.downloadPatchFile(app_name, patch_file);
+        Call<ResponseBody> call = apiService.downloadPatchFile(app_name, patch_id);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -73,12 +75,12 @@ public final class DownloadPatch {
                             Toast.makeText(context, "File has been successfully downloaded", Toast.LENGTH_SHORT).show();
 
                             oldApkFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
-                                    File.separator + R.string.app_name); //this needs to be set
+                                    File.separator + context.getResources().getString(R.string.app_name) + ".apk"); //this needs to be set
                             File patchFile = new File(file.getAbsolutePath());
 
                             try {
 
-                                int status = PatchHelper.applyPatch(oldApkFile, patchFile);
+                                int status = PatchHelper.applyPatch(context, oldApkFile, patchFile);
 
                     /*if(status == BSPatch.RETURN_SUCCESS)
                     {
@@ -86,6 +88,9 @@ public final class DownloadPatch {
                     }*/
 
                                 switch (status) {
+                                    case 1:
+                                        installPatchedAPK(new File(file.getParentFile().getAbsolutePath() + File.separator + "updated_" + oldApkFile.getName()));
+                                        break;
                                     case BSPatch.RETURN_DIFF_FILE_ERR: {
                                         throw new PatchException("Diff File Error");
                                     }
@@ -101,7 +106,6 @@ public final class DownloadPatch {
                                 e.printStackTrace();
                             }
 
-                            installPatchedAPK(new File(file.getParentFile().getAbsolutePath() + File.separator + "updated_" + oldApkFile.getName()));
                         } else
                             Toast.makeText(context, "Error when downloading file", Toast.LENGTH_SHORT).show();
                         super.onPostExecute(success);
@@ -118,9 +122,12 @@ public final class DownloadPatch {
 
     public void installPatchedAPK(File newAPKPath) {
         copy(newAPKPath, oldApkFile);
+
         Intent promptInstall = new Intent(Intent.ACTION_VIEW)
-                .setDataAndType(Uri.parse(oldApkFile.getAbsolutePath()),
-                        "application/vnd.android.package-archive");
+                .setDataAndType(FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".fileprovider", oldApkFile),
+        "application/vnd.android.package-archive");
+        promptInstall.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         mContext.startActivity(promptInstall);
 
         //to check the behaviour if the below statement is removed

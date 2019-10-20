@@ -1,5 +1,6 @@
 package com.genesis.android.network;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.genesis.android.MainActivity;
@@ -18,11 +19,11 @@ class PatchHelper {
      * @return 0 on success
      * @throws PatchException
      */
-    public static int applyPatch(File oldApkFile, File patchFile) throws PatchException {
+    public static int applyPatch(Context context, File oldApkFile, File patchFile) throws PatchException {
 
 
         File newTempFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
-                File.separator + "updated_" + R.string.app_name);
+                File.separator + "updated_" + context.getResources().getString(R.string.app_name) + ".apk");
 
         try {
             newTempFile.createNewFile();

@@ -12,10 +12,10 @@ import retrofit2.http.Streaming;
 public interface ApiService {
 
     @Streaming
-    @GET("app/{app-name}/patch/{patch-file}")
+    @GET("app/{app-name}/patch/{patch-id}")
     Call<ResponseBody> downloadPatchFile(
             @Path("app-name") String appName,
-            @Path("patch-file") String patchFile
+            @Path("patch-id") String patch_id
     );
 
     @GET("app/{app-name}/update/{version-id}")

@@ -14,13 +14,13 @@ public class CheckUpdateModel {
     @SerializedName("version")
     private String version;
 
-    @SerializedName("release_date")
+    @SerializedName("releaseDate")
     private String release_date;
 
-    @SerializedName("patch_id")
-    private int patch_id;
+    @SerializedName("patchId")
+    private String patch_id;
 
-    @SerializedName("patch_file")
+    @SerializedName("patchFile")
     private String patch_file;
 
     public String getName() {
@@ -47,11 +47,11 @@ public class CheckUpdateModel {
         this.release_date = release_date;
     }
 
-    public int getPatch_id() {
+    public String getPatch_id() {
         return patch_id;
     }
 
-    public void setPatch_id(int patch_id) {
+    public void setPatch_id(String patch_id) {
         this.patch_id = patch_id;
     }
 

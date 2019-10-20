@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text=""
         android:textSize="20dp" />
 
@@ -18,16 +20,18 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="18dp"
+        android:gravity="center"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView_releaseDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text=""
         android:textSize="18dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/material_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

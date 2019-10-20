@@ -5,7 +5,7 @@ public class ModelCheckUpdate {
     private String name;
     private String version;
     private String release_date;
-    private int patch_id;
+    private String patch_id;
     private String patch_file;
 
     private ModelCheckUpdate modelCheckUpdate;
@@ -34,11 +34,11 @@ public class ModelCheckUpdate {
         this.release_date = release_date;
     }
 
-    public int getPatch_id() {
+    public String getPatch_id() {
         return patch_id;
     }
 
-    public void setPatch_id(int patch_id) {
+    public void setPatch_id(String patch_id) {
         this.patch_id = patch_id;
     }
 
