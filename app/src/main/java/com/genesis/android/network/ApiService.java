@@ -14,12 +14,12 @@ public interface ApiService {
     @Streaming
     @GET("app/{app-name}/patch/{patch-file}")
     Call<ResponseBody> downloadPatchFile(
-            @Path(value = "app-name", encoded = true) String appName,
-            @Path(value = "patch-file", encoded = true) String patchFile
+            @Path("app-name") String appName,
+            @Path("patch-file") String patchFile
     );
 
     @GET("app/{app-name}/update/{version-id}")
     Call<CheckUpdateModel> checkForUpdate(
-            @Path(value = "app-name", encoded = true) String appName,
-            @Path(value = "version-id", encoded = true) String version);
+            @Path("app-name") String appName,
+            @Path("version-id") String version);
 }

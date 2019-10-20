@@ -1,6 +1,7 @@
 package com.genesis.android.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.genesis.android.R;
 
@@ -20,7 +21,7 @@ public class ApiServiceGenerator {
 
         if (sRetrofit == null) {
             try {
-                String baseUrl = String.valueOf(R.string.url);
+                String baseUrl = context.getResources().getString(R.string.url);
                 sRetrofit = new Retrofit.Builder()
                         .baseUrl(baseUrl)
                         .addConverterFactory(ScalarsConverterFactory.create())

@@ -65,6 +65,7 @@ public final class CheckUpdate {
 //            e.printStackTrace();
 //        }
 
+
         // Execute sequence
         Call<CheckUpdateModel> executeSequenceCall = apiService.checkForUpdate(app_name, String.valueOf(currentVersionId));
 

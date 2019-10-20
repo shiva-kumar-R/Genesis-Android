@@ -46,7 +46,7 @@ public final class DownloadPatch {
     }
 
     public void downloadPatchFile(final Context context, final String patch_file) {
-        String app_name = context.getResources().getString(R.string.app_name);
+        String app_name = context.getResources().getString(R.string.app_name).toLowerCase();
         Call<ResponseBody> call = apiService.downloadPatchFile(app_name, patch_file);
 
         call.enqueue(new Callback<ResponseBody>() {
