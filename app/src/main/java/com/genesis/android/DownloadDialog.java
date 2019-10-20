@@ -19,9 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.genesis.android.network.DownloadPatch;
+import com.genesis.android.network.bsdiff.BSPatch;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import static android.app.Activity.RESULT_OK;
