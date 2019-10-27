@@ -2,6 +2,7 @@ package com.genesis.android.network;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.genesis.android.ModelCheckUpdate;
 
@@ -101,11 +102,14 @@ public final class CheckUpdate {
                         modelCheckUpdate.setRelease_date(release_date);
                         modelCheckUpdate.setPatch_id(patch_id);
                         modelCheckUpdate.setPatch_file(patch_file);
-                        Log.d("Dynamic","patch id" + patch_id);
+                        Log.d("Dynamic", "patch id" + patch_id);
                         if (checkUpdateDialogListener != null)
                             checkUpdateDialogListener.onRecieveData(modelCheckUpdate);
                     }
                 } else {
+                    if (response.code() == 404) {
+                        Toast.makeText(mContext, "No Updates found", Toast.LENGTH_LONG).show();
+                    }
                     Log.i(TAG, "else failure");
                 }
             }

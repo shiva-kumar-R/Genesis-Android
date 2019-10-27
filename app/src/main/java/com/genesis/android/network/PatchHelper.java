@@ -19,17 +19,10 @@ class PatchHelper {
      * @return 0 on success
      * @throws PatchException
      */
-    public static int applyPatch(Context context, File oldApkFile, File patchFile) throws PatchException {
-
-
-        File newTempFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
-                File.separator + "updated_" + context.getResources().getString(R.string.app_name) + ".apk");
-
+    public static int applyPatch(File oldApkFile, File patchFile, File newTempFile) throws PatchException {
         try {
             newTempFile.createNewFile();
-
             return BSPatch.patchFast(new FileInputStream(oldApkFile), new FileInputStream(patchFile), newTempFile);
-            //return 0;
         } catch (IOException e) {
             throw new PatchException(e.getMessage());
         }

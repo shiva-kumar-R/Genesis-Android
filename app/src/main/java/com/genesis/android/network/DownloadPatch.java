@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -75,29 +76,27 @@ public final class DownloadPatch {
                             Toast.makeText(context, "File has been successfully downloaded", Toast.LENGTH_SHORT).show();
 
                             oldApkFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
-                                    File.separator + context.getResources().getString(R.string.app_name) + ".apk"); //this needs to be set
+                                    File.separator + context.getResources().getString(R.string.app_name) + ".apk");
                             File patchFile = new File(file.getAbsolutePath());
-
                             try {
-
-                                int status = PatchHelper.applyPatch(context, oldApkFile, patchFile);
-
-                    /*if(status == BSPatch.RETURN_SUCCESS)
-                    {
-                        //Success
-                    }*/
-
+                                File newApkFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
+                                        File.separator + "updated_" + context.getResources().getString(R.string.app_name) + ".apk");
+                                int status = PatchHelper.applyPatch(oldApkFile, patchFile, newApkFile);
                                 switch (status) {
-                                    case 1:
-                                        installPatchedAPK(new File(file.getParentFile().getAbsolutePath() + File.separator + "updated_" + oldApkFile.getName()));
+                                    case BSPatch.RETURN_SUCCESS:
+                                        Toast.makeText(context, "Successfully generated new APK", Toast.LENGTH_LONG).show();
+                                        installPatchedAPK(newApkFile);
                                         break;
                                     case BSPatch.RETURN_DIFF_FILE_ERR: {
+                                        Toast.makeText(context, "Patch File Error", Toast.LENGTH_LONG).show();
                                         throw new PatchException("Diff File Error");
                                     }
                                     case BSPatch.RETURN_NEW_FILE_ERR: {
+                                        Toast.makeText(context, "New APK File Error", Toast.LENGTH_LONG).show();
                                         throw new PatchException("New File Error");
                                     }
                                     case BSPatch.RETURN_OLD_FILE_ERR: {
+                                        Toast.makeText(context, "Old APK File Error", Toast.LENGTH_LONG).show();
                                         throw new PatchException("Old File Error");
                                     }
 
@@ -116,39 +115,19 @@ public final class DownloadPatch {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 // TODO handle this condition
+                Log.d("DEBUG", "failed to read the stream " + t.getMessage());
             }
         });
     }
 
-    public void installPatchedAPK(File newAPKPath) {
-        copy(newAPKPath, oldApkFile);
-
+    public void installPatchedAPK(File newApkFile) {
+//        Files.copy(oldApkFile.toPath(), newAPKPath.toPath());
         Intent promptInstall = new Intent(Intent.ACTION_VIEW)
-                .setDataAndType(FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".fileprovider", oldApkFile),
-        "application/vnd.android.package-archive");
-        promptInstall.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                .setDataAndType(Uri.fromFile(newApkFile), "application/vnd.android.package-archive");
+//        promptInstall.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(promptInstall);
-
-        //to check the behaviour if the below statement is removed
-        //startActivity(intent);
-    }
-
-    public static void copy(File src, File dst) {
-        try (InputStream in = new FileInputStream(src)) {
-            try (OutputStream out = new FileOutputStream(dst)) {
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
