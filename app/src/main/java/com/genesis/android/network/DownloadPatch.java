@@ -8,19 +8,14 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.core.content.FileProvider;
-
 import com.genesis.android.R;
-import com.genesis.android.network.bsdiff.BSPatch;
+import com.genesis.android.bsdiff.BSPatch;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

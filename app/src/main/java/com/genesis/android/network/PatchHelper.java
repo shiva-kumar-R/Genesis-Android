@@ -1,11 +1,6 @@
 package com.genesis.android.network;
 
-import android.content.Context;
-import android.os.Environment;
-
-import com.genesis.android.MainActivity;
-import com.genesis.android.R;
-import com.genesis.android.network.bsdiff.BSPatch;
+import com.genesis.android.bsdiff.BSPatch;
 
 import java.io.File;
 import java.io.FileInputStream;

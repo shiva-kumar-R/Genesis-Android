@@ -1,15 +1,9 @@
 package com.genesis.android;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.genesis.android.network.DownloadPatch;
-import com.genesis.android.network.bsdiff.BSPatch;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-
-import static android.app.Activity.RESULT_OK;
 
 public class DownloadDialog extends DialogFragment {
     private Context context;

@@ -1,4 +1,4 @@
-package com.genesis.android.network.bsdiff;
+package com.genesis.android.bsdiff;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
