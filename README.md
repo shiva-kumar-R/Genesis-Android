@@ -30,6 +30,8 @@ bspatch builds new APK from old APK and patch file and writes to new APK.
 
 Once new APK is build Application starts packager manager which installs new APK.
 
+You can find the server code here -> [Genesis Server](https://github.com/NishanthSpShetty/genesis)
+
 # How is this Useful?
 
 Well, If the app is not managed by playstore all updates for the app should be maintained seperately. So, for every new version downloaded and installing completely new APK consumes lot of bandwitch and time. So using this bsdiff/bspatch algorithm only patch file (delta) is downloaded and patched at client side.
